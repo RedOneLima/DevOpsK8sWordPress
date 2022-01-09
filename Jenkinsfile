@@ -9,7 +9,9 @@ pipeline {
 		    branch 'main'
 		 }
          steps {
-            sh 'kubectl apply -f ./kubernetes'
+            withKubeConfig([credentialsId: 'kubectl-wordpress', serverUrl: 'https://devops2:6443']) {
+               sh 'kubectl apply -f ./kubernetes'
+            }
          }
       }
   
