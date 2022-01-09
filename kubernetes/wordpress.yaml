@@ -76,15 +76,14 @@ kind: Service
 metadata:
   name: wordpress
   namespace: wordpress
+  labels:
+    app: wordpress
 spec:
+  ports:
+    - port: 80
+      nodePort: 30000
   selector:
     app: wordpress
+    tier: frontend
   type: NodePort
-  ports:
-  - name: wordpress
-    protocol: TCP
-    port: 80
-    targetPort: 80
-    # If you set the `spec.type` field to `NodePort` and you want a specific port number,
-    # you can specify a value in the `spec.ports[*].nodePort` field.
-    nodePort: 30000
+    
