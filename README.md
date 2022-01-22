@@ -12,6 +12,26 @@ This is project 1 in course 1 of the CalTech DevOps post-graduate certificate pr
   * Jenkins running on devops
   * Personal Repository hosted at https://github.com/RedOneLima/DevOpsK8sWordPress
 
+## Deployment description
+
+* This deployment contains wordpress and a mariadb database to back the wordpress instance. This contains a few different Kubernetes structures
+  * Wordpress
+    * Deployment
+      - This defines the application configuration and all relivent controllers
+    * Service
+      - This defines the service bound to the deployment for cluster communication as well as access to the WP instance from outside the cluster
+    * Persistant Volume Claim
+      - This creates a volume to persist data from the WP container
+  * MariaDB
+    * Secret
+      - Defines the password for the DB
+    * Deployment 
+      - This defines the application configration
+    * Service
+      - Defines where the DB can be reached
+    * Persistant Volume Claim
+      - Persists the DB data 
+
 ## Create K3s cluster
 
 * On the master node, run the Rancher K3s script (devops2)
@@ -169,3 +189,21 @@ pipeline {
 
 ## Testing workflow
 
+* Commit add kubernetes files and commit changes
+![Push Commit](images/git-push.png)
+
+* Check my GitHub to make sure the webhook triggered
+  * Note, that my public IP changed since I originally set up my webhook, so that's why there was a failure and a successful retry
+
+![WebHook Verification](images/git-webhook-trigger.png)
+
+* Next, we'll verify that the Jenkins job triggered and sent our kubectl command to our cluster
+
+![Jenkins Build Log](images/jenkins-log.png)
+
+* Finally, we'll check our cluster status and go to our deployed wordpress
+   * Note, that our worpress service is on nodeport on 30000 which is where we'll point our browser to.
+
+![kubectl get all -n wordpress](images/kubectl-get-all.png)
+
+![wordpress-application](images/wordpress-install.png)
